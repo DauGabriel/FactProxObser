@@ -1,0 +1,67 @@
+class Pedido:
+    def __init__(self, id, cliente, valor):
+        self.id = id
+        self.cliente = cliente
+        self.valor = valor
+
+class PedidoFactory:
+    def __init__(self):
+        self.pedidos = []
+        self.observers = []
+
+    def criar_pedido(self, cliente, valor):
+        id = len(self.pedidos) + 1
+        pedido = Pedido(id, cliente, valor)
+        self.pedidos.append(pedido)
+        self.notificar_observers(pedido)
+        return pedido
+
+    def notificar_observers(self, pedido):
+        for observer in self.observers:
+            observer.notificar(pedido)
+
+    def adicionar_observer(self, observer):
+        self.observers.append(observer)
+
+    def remover_observer(self, observer):
+        self.observers.remove(observer)
+
+class Pedido:
+    def __init__(self, id, cliente, valor):
+        self.id = id
+        self.cliente = cliente
+        self.valor = valor
+
+class PedidoFactory:
+    def __init__(self):
+        self.pedidos = []
+        self.observers = []
+
+    def criar_pedido(self, cliente, valor):
+        id = len(self.pedidos) + 1
+        pedido = Pedido(id, cliente, valor)
+        self.pedidos.append(pedido)
+        self.notificar_observers(pedido)
+        return pedido
+
+    def notificar_observers(self, pedido):
+        for observer in self.observers:
+            observer.notificar(pedido)
+
+    def adicionar_observer(self, observer):
+        self.observers.append(observer)
+
+    def remover_observer(self, observer):
+        self.observers.remove(observer)
+
+class PedidoProxy:
+    def __init__(self, factory, cliente, valor):
+        self.factory = factory
+        self.cliente = cliente
+        self.valor = valor
+
+    def criar_pedido(self):
+        if self.valor <= 0:
+            raise ValueError("O valor do pedido deve ser maior do que zero")
+        return self.factory.criar_pedido(self.cliente, self.valor)
+
